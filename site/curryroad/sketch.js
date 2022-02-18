@@ -43,13 +43,16 @@ function reset() {
     idsToBeTerminated = []
 }
 
+let spawnRate = 0.3;
+let spawnDelay = 210;
+
 function createRandomEnemy() {
     iMode = Math.random() < 0.5
     iRow = randomIntFromInterval(1, 6);
     if (rowDirection[iRow - 1] !== -1) {
         iMode = rowDirection[iRow - 1] === 1;
     }
-    if (rowTimings[iRow - 1] + 170 > Date.now()) return;
+    if (rowTimings[iRow - 1] + spawnDelay > Date.now()) return;
     rowTimings[iRow - 1] = Date.now();
     const index = rowTimings.indexOf(min);
     enemies.push({
@@ -65,6 +68,18 @@ let prideFlag;
 let curryStore;
 let font;
 let backg;
+let easyMode;
+let normalMode;
+let hardMode;
+let chadMode;
+let diffText = "Difficulty: normal";
+
+function changeDifficulty(ispawnrate, idelay, text) {
+    spawnRate = ispawnrate;
+    spawnDelay = idelay;
+    diffText = "Difficulty: " + text;
+    reset();
+}
 
 function setup() {
     createCanvas(canvasDim, canvasDim, WEBGL);
@@ -75,6 +90,20 @@ function setup() {
     curryStore = loadImage('curry-store.png');
     backg = loadImage('back.png');
     font = loadFont('font.ttf');
+
+    easyMode = createButton('Easy Mode');
+    easyMode.position(10, 10);
+    normalMode = createButton('Normal Mode');
+    normalMode.position(10, 35);
+    hardMode = createButton('Hard Mode');
+    hardMode.position(10, 60);
+    chadMode = createButton('chad Mode');
+    chadMode.position(10, 85);
+    easyMode.mousePressed(() => { changeDifficulty(0.2, 280, "easy") });
+    normalMode.mousePressed(() => { changeDifficulty(0.3, 210, "normal") });
+    hardMode.mousePressed(() => { changeDifficulty(0.7, 100, "hard") });
+    chadMode.mousePressed(() => { changeDifficulty(0.99, 50, "chad") });
+
     while (!font) {}
     reset();
 }
@@ -97,7 +126,7 @@ function draw() {
     texture(backg);
     rect(0, 0, canvasDim);
     //background(200, 255, 200)
-    if (Math.random() < 0.50) {
+    if (Math.random() < spawnRate) {
         createRandomEnemy();
     }
     noStroke()
@@ -152,7 +181,8 @@ function draw() {
         text('YUMMY', canvasDim / 2, 200);
     }
     textSize(width / 32);
-    text('WASD/arrows to move', 100, 100);
+    text('WASD/arrows to move', 100, 130);
+    text(diffText, 100, 150);
     if (keyIsDown(UP_ARROW) || keyIsDown(87)) {
         playerY -= 0.17 * deltaTime;
     }
