@@ -1,17 +1,20 @@
 canvasDim = 600;
 playerSize = 30;
 
+screenMiddle = canvasDim / 2 - playerSize / 2;
+
 playerY = canvasDim - playerSize - 8;
+playerX = canvasDim - playerSize - screenMiddle;
 
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
 
 
 
-screenMiddle = canvasDim / 2 - playerSize / 2;
 
-function doesColide(y, x2, y2, radius) {
-    if (abs(x2 - screenMiddle) > radius) return false;
+
+function doesColide(x, y, x2, y2, radius) {
+    if (abs(x2 - x) > radius) return false;
     return abs(y - y2) < radius
 }
 enemyX = screenMiddle;
@@ -36,6 +39,7 @@ function reset() {
     idCount = 0
     enemies = []
     playerY = canvasDim - playerSize - 8;
+    playerX = canvasDim - playerSize - screenMiddle;
     idsToBeTerminated = []
 }
 
@@ -110,7 +114,7 @@ function draw() {
         noStroke()
         texture(prideFlag);
         rect(enemy.xPos, getRowY(enemy.row) + 2.5, 30)
-        if (doesColide(playerY, enemy.xPos, getRowY(enemy.row) + 2.5, 31)) {
+        if (doesColide(playerX, playerY, enemy.xPos, getRowY(enemy.row) + 2.5, 31)) {
             collidingThisFrame = true;
         }
         if (!enemy.mode) {
@@ -141,16 +145,22 @@ function draw() {
     texture(curryStore);
     rect(screenMiddle - 150 / 2, 15, 150)
     texture(tainFace);
-    rect(screenMiddle, playerY, playerSize)
+    rect(playerX, playerY, playerSize)
     if (playerY < getRowY(0) + 50) {
         let time = millis() % 100;
         textSize(width / 8);
         text('YUMMY', canvasDim / 2, 200);
     }
     textSize(width / 32);
-    text('up/W down/S to move', 100, 100);
+    text('WASD/arrows to move', 100, 100);
     if (keyIsDown(UP_ARROW) || keyIsDown(87)) {
         playerY -= 0.17 * deltaTime;
+    }
+    if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
+        playerX -= 0.17 * deltaTime;
+    }
+    if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
+        playerX += 0.17 * deltaTime;
     }
     if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) {
         playerY += 0.17 * deltaTime;
