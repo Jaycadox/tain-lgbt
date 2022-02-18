@@ -45,7 +45,7 @@ function createRandomEnemy() {
     if (rowDirection[iRow - 1] !== -1) {
         iMode = rowDirection[iRow - 1] === 1;
     }
-    if (rowTimings[iRow - 1] + 160 > Date.now()) return;
+    if (rowTimings[iRow - 1] + 170 > Date.now()) return;
     rowTimings[iRow - 1] = Date.now();
     const index = rowTimings.indexOf(min);
     enemies.push({
@@ -60,6 +60,7 @@ let tainFace;
 let prideFlag;
 let curryStore;
 let font;
+let backg;
 
 function setup() {
     createCanvas(canvasDim, canvasDim, WEBGL);
@@ -68,10 +69,9 @@ function setup() {
     tainFace = loadImage('f4.png');
     prideFlag = loadImage('pride-flag.png');
     curryStore = loadImage('curry-store.png');
+    backg = loadImage('back.png');
     font = loadFont('font.ttf');
-    textFont(font);
-    textSize(width / 8);
-    textAlign(CENTER, CENTER);
+    while (!font) {}
     reset();
 }
 
@@ -86,13 +86,18 @@ function pause(ms) {
 
 
 function draw() {
+    textFont(font);
+    textSize(width / 8);
+    textAlign(CENTER, CENTER);
     translate(-canvasDim / 2, -canvasDim / 2)
-    background(200, 255, 200)
-    if (Math.random() < 0.35) {
+    texture(backg);
+    rect(0, 0, canvasDim);
+    //background(200, 255, 200)
+    if (Math.random() < 0.50) {
         createRandomEnemy();
     }
     noStroke()
-    fill(30, 30, 40);
+    fill(30, 30, 40, 150);
     rect(0, getRowY(1), canvasDim, 35)
     rect(0, getRowY(2), canvasDim, 35)
     rect(0, getRowY(3), canvasDim, 35)
