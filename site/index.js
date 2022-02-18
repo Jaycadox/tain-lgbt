@@ -14,7 +14,7 @@ document.querySelectorAll('.straightbtn').forEach(function(btn) {
     });
 });
 
-document.querySelectorAll('.modern-btn').forEach(function(btn) {
+document.querySelectorAll('.cum').forEach(function(btn) {
     btn.addEventListener('click', function(e) {
         e.preventDefault();
         btn.innerHTML =
