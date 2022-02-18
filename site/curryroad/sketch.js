@@ -166,4 +166,5 @@ function draw() {
         playerY += 0.17 * deltaTime;
     }
     playerY = clamp(playerY, 0, canvasDim - playerSize)
+    playerX = clamp(playerX, 0, canvasDim - playerSize)
 }
