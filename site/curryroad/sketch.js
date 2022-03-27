@@ -17,6 +17,9 @@ function doesColide(x, y, x2, y2, radius) {
     if (abs(x2 - x) > radius) return false;
     return abs(y - y2) < radius
 }
+
+sanity = doesColide;
+
 enemyX = screenMiddle;
 mode = false;
 
@@ -178,7 +181,13 @@ function draw() {
     if (playerY < getRowY(0) + 50) {
         let time = millis() % 100;
         textSize(width / 8);
-        text('YUMMY', canvasDim / 2, 200);
+        if(sanity == doesColide)
+        {
+            text('YUMMY', canvasDim / 2, 200);
+        } else{
+            text('CHEATER!', canvasDim / 2, 200);
+        }
+        
     }
     textSize(width / 32);
     text('WASD/arrows to move', 100, 130);
